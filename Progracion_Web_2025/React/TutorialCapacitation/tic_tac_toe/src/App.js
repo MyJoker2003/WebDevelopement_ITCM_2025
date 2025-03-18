@@ -38,11 +38,20 @@ function App() {
 {/*Programa Tic Tac Toe*/}
 
 function Game(){
+  /**Estado para recordar los valores en el tablero e historial*/
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const currentSquares = history[history.length - 1];
+
+  function handlePlay(nextSquares) {
+    setHistory([...history,nextSquares]);
+    setXIsNext(!xIsNext);
+  }
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board />
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
         <ol>{/*TODO*/}</ol>
@@ -68,19 +77,15 @@ function Square({value, onSquareClick}){
  * @param
  * @returns Tablero de Juego con matriz de 3X3 de Components Square  
  */
-function Board() {
-  /**Estado para recordar los valores en el tablero */
-  const [xIsNext,setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null))
+function Board({ xIsNext, squares, onPlay }) {
 
   function handleClick(i){
     if (squares[i] || calculateWinner(squares)) return;
     
     const nextSquares = squares.slice();
-    nextSquares[i] = useState ? "X" : "O";
+    nextSquares[i] = xIsNext ? "X" : "O";
     
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
