@@ -48,13 +48,28 @@ function Game(){
     setXIsNext(!xIsNext);
   }
 
+  function jumpTo(nextMove) {
+    //TODO
+  }
+
+  const moves = history.map((squares,move)=>{
+    let description;
+    description = move > 0 ? 'Ir al movimiento #' + move : 'Ir al inicio del juego';
+
+    return (
+      <li key={move}>
+        <button onClick={()=> jumpTo(move)}>{description}</button>
+      </li>
+    )
+  })
+
   return (
     <div className="game">
       <div className="game-board">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{/*TODO*/}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
